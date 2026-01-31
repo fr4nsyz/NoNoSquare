@@ -1,10 +1,10 @@
 #cloud-config
 users:
-  - name: dev
+  - name: soydev
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /usr/bin/zsh
     ssh_authorized_keys:
-      - ssh-ed25519 <INSERT_YOUR_PUBLIC_KEY>
+      - <INSERT_KEY_HERE>
 
 packages:
   - build-essential
@@ -12,21 +12,24 @@ packages:
   - zsh
   - curl
   - wget
+  - tar
 
 runcmd:
-  # Install Oh-My-Zsh non-interactively
-  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  # ---- Neovim latest (official GitHub binary) ----
+  - curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+  - sudo rm -rf /opt/nvim-linux-x86_64
+  - sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+  - sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 
-  # Enable syntax highlighting plugin
-  - git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/dev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-  # Enable autosuggestions plugin
-  - git clone https://github.com/zsh-users/zsh-autosuggestions /home/dev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  # ---- Oh-My-Zsh ----
+  - sudo -u dev sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-  # Configure .zshrc
-  - cp /home/dev/.oh-my-zsh/templates/zshrc.zsh-template /home/dev/.zshrc
-  - sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /home/dev/.zshrc
-  - chown dev:dev /home/dev/.zshrc
-  - chown -R dev:dev /home/dev/.oh-my-zsh
+  # ---- Zsh plugins ----
+  - sudo -u dev git clone https://github.com/zsh-users/zsh-autosuggestions /home/dev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  - sudo -u dev git clone https://github.com/zsh-users/zsh-syntax-highlighting /home/dev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+  # ---- Enable plugins ----
+  - sed -i 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /home/dev/.zshrc
 
 ssh_pwauth: false
 disable_root: true

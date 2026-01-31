@@ -10,9 +10,11 @@ chmod +x run_qemu.sh
 
 ./iso_grab.sh
 
+cp jammy-server-cloudimg-amd64.img devbox.qcow2
+
 cloud-localds cloudinit.iso user-data meta-data
 
-./run_qemu.sh {RAM in GB} {Num CPUs}
+./init_qemu.sh
 ```
 
 ### NOTE:
