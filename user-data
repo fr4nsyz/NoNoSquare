@@ -1,0 +1,32 @@
+#cloud-config
+users:
+  - name: dev
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /usr/bin/zsh
+    ssh_authorized_keys:
+      - ssh-ed25519 <INSERT_YOUR_PUBLIC_KEY>
+
+packages:
+  - build-essential
+  - git
+  - zsh
+  - curl
+  - wget
+
+runcmd:
+  # Install Oh-My-Zsh non-interactively
+  - sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+  # Enable syntax highlighting plugin
+  - git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/dev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  # Enable autosuggestions plugin
+  - git clone https://github.com/zsh-users/zsh-autosuggestions /home/dev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+  # Configure .zshrc
+  - cp /home/dev/.oh-my-zsh/templates/zshrc.zsh-template /home/dev/.zshrc
+  - sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' /home/dev/.zshrc
+  - chown dev:dev /home/dev/.zshrc
+  - chown -R dev:dev /home/dev/.oh-my-zsh
+
+ssh_pwauth: false
+disable_root: true
