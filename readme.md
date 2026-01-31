@@ -4,7 +4,16 @@ The last thing I want is for my host system to be compromised because I download
 
 ## Usage
 
+```
+chmod +x iso_grab.sh
+chmod +x run_qemu.sh
 
+./iso_grab.sh
+
+cloud-localds cloudinit.iso user-data meta-data
+
+./run_qemu.sh {RAM in GB} {Num CPUs}
+```
 
 ### NOTE:
 
