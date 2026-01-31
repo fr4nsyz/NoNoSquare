@@ -2,6 +2,13 @@
 
 The last thing I want is for my host system to be compromised because I downloaded a fishy pip package that promised me free robux, so that's why I decided to create this QEMU + KVM powered virtual machine workflow for the ultra paranoid developer.
 
+## Dependencies
+
+```
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager cloud-utils
+```
+
 ## Usage
 
 ```
@@ -10,12 +17,19 @@ chmod +x run_qemu.sh
 
 ./iso_grab.sh
 
-cp jammy-server-cloudimg-amd64.img devbox.qcow2
-
 cloud-localds cloudinit.iso user-data meta-data
 
 ./init_qemu.sh
+
 ```
+
+Once the `Finished Cloud-init` message appears, you can now ssh into your machine with:
+
+```
+ssh -p 2222 soydev@localhost -i ~/.ssh/box
+```
+
+
 
 ### NOTE:
 

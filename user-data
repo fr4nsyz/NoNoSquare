@@ -4,7 +4,7 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /usr/bin/zsh
     ssh_authorized_keys:
-      - <INSERT_KEY_HERE>
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAiWfLwrijKMwsqQcKTWoLWNWdh0f1N09Rg97ugAX5uM christien.coleongco@gmail.com
 
 packages:
   - build-essential
@@ -22,14 +22,15 @@ runcmd:
   - sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 
   # ---- Oh-My-Zsh ----
-  - sudo -u dev sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  - sudo -u soydev sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
   # ---- Zsh plugins ----
-  - sudo -u dev git clone https://github.com/zsh-users/zsh-autosuggestions /home/dev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-  - sudo -u dev git clone https://github.com/zsh-users/zsh-syntax-highlighting /home/dev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+  - sudo -u soydev git clone https://github.com/zsh-users/zsh-autosuggestions /home/soydev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  - sudo -u soydev git clone https://github.com/zsh-users/zsh-syntax-highlighting /home/soydev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
   # ---- Enable plugins ----
-  - sed -i 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /home/dev/.zshrc
+  - sed -i 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /home/soydev/.zshrc
+  - chown -R soydev:soydev /home/soydev/.oh-my-zsh /home/soydev/.zshrc
 
 ssh_pwauth: false
 disable_root: true
